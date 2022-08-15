@@ -14,8 +14,7 @@ func Get(keys ...string) func(Obj) Obj {
 		case Obj:
 			return Get(keys[1:]...)(arg[keys[0]].(Obj))
 		case map[string]any:
-			// return Get(keys[1:]...)(arg[keys[0]].(map[string]any))
-			return Get(keys[1:]...)(arg[keys[0]].(Obj))
+			return Get(keys[1:]...)(Obj(arg[keys[0]].(map[string]any)))
 		default:
 			return Obj{"result": nil} // TODO think about these nil cases
 		}
