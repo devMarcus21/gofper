@@ -6,6 +6,7 @@ import (
 	"github.com/devMarcus21/gofper/fp"
 )
 
+// contains many helper functions for testing
 var functions map[string]func(arg fp.Obj) fp.Obj = map[string]func(arg fp.Obj) fp.Obj{
 	"fun1": func(arg fp.Obj) fp.Obj {
 		return fp.Obj{"barbar": arg["bar"]}
@@ -34,6 +35,16 @@ func TestPipe_TwoFunctions_ReturnObj(t *testing.T) {
 	result := fun(fp.Obj{"bar": 5})
 
 	CheckEquality(t, "TestPipe_TwoFunctions_ReturnObj", expected, result)
+}
+
+func TestPipe_ManyFunctions_ReturnsObject(t *testing.T) {
+	fun1 := functions["fun1"]
+	fun := fp.Pipe(nil, fun1, func(arg fp.Obj) fp.Obj { return fp.Obj{"flag": true} })
+	expected := fp.Obj{"flag": true}
+
+	result := fun(fp.Obj{"bar": 5})
+
+	CheckEquality(t, "TestPipe_ManyFunctions_ReturnsObject", expected, result)
 }
 
 func TestPipe_OneFunctionGivenNil_ReturnNilResult(t *testing.T) {
